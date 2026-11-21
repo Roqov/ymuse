@@ -73,9 +73,11 @@ src\Ymuse\bin\Release\net9.0-windows\Ymuse.exe
 Диагностика без диалогов: `%APPDATA%\Ymuse\update.log`.
 
 Канал этого проекта — **https://github.com/Roqov/ymuse**: приложение находит его само
-по `git remote` рабочей копии (или по `RepositoryUrl` в сборке) и берёт последний релиз.
-Цикл проверен на настоящем релизе `v0.2.1`: скачивание, SHA-256 из `digest`, применение
-после выхода, перезапуск уже на новой версии.
+по `git remote` рабочей копии, по `RepositoryUrl` в сборке (зашит в `Ymuse.csproj`)
+или по `channel.json` рядом с exe — поэтому и распакованная из релиза папка видит канал.
+Проверено на настоящем релизе `v0.2.2`: скачивание, SHA-256 из `digest`, применение
+после выхода и перезапуск на новой версии — а также на чистой распаковке zip вне
+репозитория: запуск, канал `github:Roqov/ymuse` и «обновление не требуется» без загрузки.
 
 Выпуск новой версии:
 
@@ -83,6 +85,8 @@ src\Ymuse\bin\Release\net9.0-windows\Ymuse.exe
 # 1) поднять версию в src/Ymuse/Ymuse.csproj (<Version>0.2.2</Version>)
 dotnet build src/Ymuse/Ymuse.csproj -c Release
 # 2) упаковать содержимое src/Ymuse/bin/Release/net9.0-windows в zip
+#    обязательно вместе с runtimes/ — там WebView2Loader.dll, без него
+#    распакованная копия не стартует; профиль Ymuse.exe.WebView2 не включать
 # 3) создать релиз с тегом v0.2.2 и приложить zip
 ```
 

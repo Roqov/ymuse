@@ -32,11 +32,13 @@ dotnet run --project src/Ymuse
 
 ```bash
 dotnet build src/Ymuse -c Release
-src\Ymuse\bin\Release\net9.0-windows\Ymuse.exe
+src\Ymuse\bin\Release\net9.0-windows\win-x64\Ymuse.exe
 ```
 
-Требования: .NET 9 SDK (или только .NET 9 Desktop Runtime для готовой сборки)
-и Edge WebView2 Runtime (в Windows 10/11 он обычно уже установлен).
+Сборка self-contained: .NET 9 Desktop Runtime внутрь уже включён, на машине
+пользователя ставить его не нужно — достаточно распаковать папку и запустить `Ymuse.exe`.
+Единственное внешнее требование — Edge WebView2 Runtime (в Windows 10/11 он обычно уже установлен).
+Для сборки из исходников нужен .NET 9 SDK.
 
 ## Вход
 
@@ -75,22 +77,24 @@ src\Ymuse\bin\Release\net9.0-windows\Ymuse.exe
 Канал этого проекта — **https://github.com/Roqov/ymuse**: приложение находит его само
 по `git remote` рабочей копии, по `RepositoryUrl` в сборке (зашит в `Ymuse.csproj`)
 или по `channel.json` рядом с exe — поэтому и распакованная из релиза папка видит канал.
-Проверено на настоящем релизе `v0.2.2`: скачивание, SHA-256 из `digest`, применение
+Проверено на настоящем релизе `v0.2.3`: скачивание, SHA-256 из `digest`, применение
 после выхода и перезапуск на новой версии — а также на чистой распаковке zip вне
-репозитория: запуск, канал `github:Roqov/ymuse` и «обновление не требуется» без загрузки.
+репозитория и без установленного .NET 9: запуск, канал `github:Roqov/ymuse`
+и «обновление не требуется» без загрузки.
 
 Выпуск новой версии:
 
 ```bash
-# 1) поднять версию в src/Ymuse/Ymuse.csproj (<Version>0.2.2</Version>)
-dotnet build src/Ymuse/Ymuse.csproj -c Release
-# 2) упаковать содержимое src/Ymuse/bin/Release/net9.0-windows в zip
-#    обязательно вместе с runtimes/ — там WebView2Loader.dll, без него
-#    распакованная копия не стартует; профиль Ymuse.exe.WebView2 не включать
-# 3) создать релиз с тегом v0.2.2 и приложить zip
+# 1) поднять версию в src/Ymuse/Ymuse.csproj (<Version>0.2.3</Version>)
+dotnet publish src/Ymuse/Ymuse.csproj -c Release
+# 2) упаковать содержимое src/Ymuse/bin/Release/net9.0-windows/win-x64/publish в zip
+#    RuntimeIdentifier=win-x64 и SelfContained=true уже заданы в csproj, поэтому
+#    в папке лежат hostfxr.dll, coreclr.dll и WPF — .NET на машине не нужен;
+#    профиль Ymuse.exe.WebView2 и *.pdb в zip не включать
+# 3) создать релиз с тегом v0.2.3 и приложить zip
 ```
 
-Имя ассета должно содержать `win-x64` (`ymuse-0.2.2-win-x64.zip`) — по нему выбирается
+Имя ассета должно содержать `win-x64` (`ymuse-0.2.3-win-x64.zip`) — по нему выбирается
 сборка под платформу. GitHub сам считает `digest`, отдельная контрольная сумма не нужна.
 
 Либо задайте `updateUrl`/`YMUSE_UPDATE_URL` с манифестом:
@@ -99,7 +103,8 @@ dotnet build src/Ymuse/Ymuse.csproj -c Release
 { "version": "0.3.0", "url": "https://host/ymuse-0.3.0.zip", "sha256": "<hex>" }
 ```
 
-В zip кладётся содержимое папки сборки (`Ymuse.exe`, `Ymuse.dll`, `wwwroot`, WebView2-dll).
+В zip кладётся содержимое папки публикации (`Ymuse.exe`, `Ymuse.dll`, `wwwroot`, WebView2-dll,
+рантайм .NET 9 и WPF) — распакованная копия запускается на чистой Windows без установки .NET.
 Статус виден внизу сайдбара: версия, канал и, если сборка уже скачана, — «обн. 0.3.0 при выходе».
 
 Приложение не отправляет данные никуда, кроме `api.music.yandex.net` и `oauth.yandex.ru`.

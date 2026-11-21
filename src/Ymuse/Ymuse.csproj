@@ -9,9 +9,15 @@
     <AssemblyName>Ymuse</AssemblyName>
     <RootNamespace>Ymuse</RootNamespace>
     <Product>Ymuse</Product>
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <TieredPGO>true</TieredPGO>
+
+    <!-- Портативная сборка: .NET 9 и WPF едут внутри, на машине пользователя runtime не нужен. -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>false</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>

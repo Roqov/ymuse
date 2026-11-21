@@ -72,14 +72,23 @@ src\Ymuse\bin\Release\net9.0-windows\Ymuse.exe
 воспроизведение не прерывается, настройки и токен в `%APPDATA%` не затрагиваются.
 Диагностика без диалогов: `%APPDATA%\Ymuse\update.log`.
 
-**Сейчас у проекта нет git-remote и GitHub-релизов**, поэтому на чистой сборке канал
-не находится и обновлений нет. Чтобы включить:
+Канал этого проекта — **https://github.com/Roqov/ymuse**: приложение находит его само
+по `git remote` рабочей копии (или по `RepositoryUrl` в сборке) и берёт последний релиз.
+Цикл проверен на настоящем релизе `v0.2.1`: скачивание, SHA-256 из `digest`, применение
+после выхода, перезапуск уже на новой версии.
+
+Выпуск новой версии:
 
 ```bash
-git remote add origin https://github.com/<owner>/<repo>
+# 1) поднять версию в src/Ymuse/Ymuse.csproj (<Version>0.2.2</Version>)
+dotnet build src/Ymuse/Ymuse.csproj -c Release
+# 2) упаковать содержимое src/Ymuse/bin/Release/net9.0-windows в zip
+# 3) создать релиз с тегом v0.2.2 и приложить zip
 ```
 
-и публикуйте релизы с zip-ассетом для Windows x64 — GitHub сам отдаст SHA-256 (digest).
+Имя ассета должно содержать `win-x64` (`ymuse-0.2.2-win-x64.zip`) — по нему выбирается
+сборка под платформу. GitHub сам считает `digest`, отдельная контрольная сумма не нужна.
+
 Либо задайте `updateUrl`/`YMUSE_UPDATE_URL` с манифестом:
 
 ```json

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ymuse</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand"><span class="logo">♪</span><span>Ymuse</span></div>
+
+    <nav id="mainNav">
+      <button class="nav-item" data-act="nav" data-nav="wave"><span class="ico">〰</span>Моя волна</button>
+      <button class="nav-item" data-act="nav" data-nav="radio"><span class="ico">◉</span>Поток</button>
+      <button class="nav-item" data-act="nav" data-nav="search"><span class="ico">⌕</span>Поиск</button>
+      <button class="nav-item" data-act="nav" data-nav="playlists"><span class="ico">≡</span>Плейлисты</button>
+    </nav>
+
+    <div class="side-block">
+      <div class="side-title">Настроение</div>
+      <div class="side-list" id="sideMood"></div>
+    </div>
+
+    <div class="side-block">
+      <div class="side-title">Занятие</div>
+      <div class="side-list" id="sideActivity"></div>
+    </div>
+
+    <div class="side-foot" id="sideFoot"></div>
+    <div class="side-version" id="sideVersion"></div>
+  </aside>
+
+  <main id="main">
+    <header class="topbar">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="top-actions">
+        <button class="ghost" id="btnSettings" title="Настройки потока">⚙</button>
+        <div class="account" id="account"></div>
+      </div>
+    </header>
+    <div id="content" class="content"></div>
+  </main>
+</div>
+
+<div id="player" class="player hidden">
+  <div class="np">
+    <div class="np-cover"><img id="npCover" alt="" hidden><span id="npCoverFallback">♪</span></div>
+    <div class="np-text">
+      <div id="npTitle" class="np-title">Ничего не играет</div>
+      <div id="npArtist" class="np-artist"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="btnPrev" class="ctrl" title="Назад">⏮</button>
+    <button id="btnPlay" class="ctrl play" title="Играть">▶</button>
+    <button id="btnNext" class="ctrl" title="Вперёд">⏭</button>
+  </div>
+
+  <div class="progress">
+    <span id="tCur">0:00</span>
+    <input id="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Позиция">
+    <span id="tDur">0:00</span>
+  </div>
+
+  <div class="volume">
+    <button id="btnMute" class="ctrl small" title="Звук">🔊</button>
+    <input id="vol" type="range" min="0" max="100" value="80" aria-label="Громкость">
+  </div>
+</div>
+
+<div id="drawer" class="drawer hidden">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title">Настройки потока</div>
+      <div class="drawer-sub" id="drawerStation"></div>
+    </div>
+    <button class="ghost" id="drawerClose">✕</button>
+  </div>
+  <div id="drawerBody" class="drawer-body"></div>
+</div>
+<div id="scrim" class="scrim hidden"></div>
+
+<div id="toast" class="toast"></div>
+<audio id="audio" preload="auto"></audio>
+<script src="app.js"></script>
+</body>
+</html>

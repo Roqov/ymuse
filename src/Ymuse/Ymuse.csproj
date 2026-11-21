@@ -9,7 +9,7 @@
     <AssemblyName>Ymuse</AssemblyName>
     <RootNamespace>Ymuse</RootNamespace>
     <Product>Ymuse</Product>
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <TieredPGO>true</TieredPGO>
   </PropertyGroup>
@@ -20,6 +20,11 @@
 
   <ItemGroup>
     <None Update="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Канал обновлений: работает и когда сборка распакована вне репозитория. -->
+  <ItemGroup>
+    <AssemblyMetadata Include="RepositoryUrl" Value="https://github.com/Roqov/ymuse" />
   </ItemGroup>
 
 </Project>
